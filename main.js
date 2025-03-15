@@ -1,7 +1,7 @@
 
 
 const BOT_TOKEN = "7542656098:AAEm6dhsgHZQigUqCtbzkYS9X7tx5xzjVYU"; // Bot tokeningizni kiriting
-const CHAT_ID = "7542656098"; // Foydalanuvchi yoki guruh ID'si
+const CHAT_ID = "5988799383"; // Foydalanuvchi yoki guruh ID'si
 
 
 
@@ -43,6 +43,8 @@ function sendToTelegramBot(name, email, website, info) {
     })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
+
             if (data.ok) {
                 alert("Ma'lumot yuborildi!");
             } else {
