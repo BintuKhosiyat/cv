@@ -4,39 +4,53 @@ const BOT_TOKEN = "7542656098:AAEm6dhsgHZQigUqCtbzkYS9X7tx5xzjVYU"; // Bot token
 const CHAT_ID = "7542656098"; // Foydalanuvchi yoki guruh ID'si
 
 
-document.getElementById("sendButton").addEventListener("click", function () {
-    const name = document.getElementById("nameInput").value;
-    const email = document.getElementById("emailInput").value;
-    const website = document.getElementById("websiteInput").value;
-    const text = document.getElementById("textInput").value;
 
-    if (!name || email || text) {
-        alert("❌ Iltimos, Ism, Email va Xabar maydonlarini to'ldiring!");
-        return;
-    }
+// Formani olish
+const form = document.getElementById('userForm');
 
-    const message = `📌 Yangi Xabar!\n\n👤 Ism: ${name}\n📧 Email: ${email}\n🌍 Website: ${website || "Yo‘q"}\n💬 Xabar: ${text}`;
+// Formaning submit hodisasi
+form.addEventListener('submit', function (event) {
+    event.preventDefault(); // Formaning qayta yuklanishining oldini olish
 
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: message,
-            parse_mode: "Markdown"
-        })
+    // Inputlarni olish
+    const name = document.getElementById('nameInput').value;
+    const email = document.getElementById('emailInput').value;
+    const website = document.getElementById('websiteInput').value;
+    const info = document.getElementById('textInput').value;
+
+    // Foydalanuvchi ma'lumotlarini botga yuborish
+    sendToTelegramBot(name, email, website, info);
+});
+
+// Telegram botga yuborish funksiyasi
+function sendToTelegramBot(name, email, website, info) {
+    const message = `Ism: ${name}\nEmail: ${email}\nWebsite: ${website}\nText:${info}`;
+
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+    const data = {
+        chat_id: CHAT_ID,
+        text: message
+    };
+
+    // Fetch orqali Telegram botga ma'lumot yuborish
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     })
         .then(response => response.json())
         .then(data => {
             if (data.ok) {
-                alert("✅ Xabar yuborildi!");
-                document.getElementById("nameInput").value = "";
-                document.getElementById("emailInput").value = "";
-                document.getElementById("websiteInput").value = "";
-                document.getElementById("textInput").value = "";
+                alert("Ma'lumot yuborildi!");
             } else {
-                alert("❌ Xatolik: " + data.description);
+                alert("Xatolik yuz berdi.");
             }
         })
-        .catch(error => console.error("Xatolik:", error));
-});
+        .catch(error => {
+            console.error("Xatolik:", error);
+            alert("Xatolik yuz berdi.");
+        });
+}

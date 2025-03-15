@@ -292,6 +292,25 @@ a {
     gap: 20px;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+form input {
+    display: block;
+    width: 100%;
+}
+
+form button {
+    cursor: pointer;
+}
+
+form textarea {
+    width: 100%;
+}
+
 .eightRow input {
     padding: 16px 24px;
 }
